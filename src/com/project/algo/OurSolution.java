@@ -76,8 +76,8 @@ public class OurSolution {
             // place the die in layer
             firstlayer.addDie(availableDies.get(i));
             
-            // delete the die from available dies
-            availableDies.remove(i);
+//            // delete the die from available dies
+//            availableDies.remove(i);
             
             // go to next die
             i++;
@@ -91,20 +91,21 @@ public class OurSolution {
         
         
         // logic for upper layer stack
-        while(!availableDies.isEmpty()) {
+        while(i < availableDies.size()) {
             
             // make a new layer
             Layer currentLayer = new Layer();
+            tempTSV = 0;
             
-            while(i < availableDies.size() && // if there are dies
-                // check if after taking next die it satisfies
-                // the maximum tsv constraint
-                (tempTSV + availableDies.get(i).getTSV() <= Constant.TSV_MAX)) {
+            // check if after taking next die it satisfies
+            // the maximum tsv constraint
+            while(i < availableDies.size() && 
+                    (tempTSV + availableDies.get(i).getTSV() <= Constant.TSV_MAX)) {
                 
                 // calculate the tsv
                 tempTSV = tempTSV + availableDies.get(i).getTSV(); 
                 
-                // place the die in the layer
+                // place the current die into the layer
                 currentLayer.addDie(availableDies.get(i));
                 
                 // get the cumulative test cycle
@@ -117,12 +118,16 @@ public class OurSolution {
                 totalTestCycle += 
                         totalPreviousLayersTestCycle + currentLayer.getMaxTestCycle();
                 
-                // place the current die into the layer
-                currentLayer.addDie(availableDies.get(i));
                 
-                // remove the current die from the available dies
-                availableDies.remove(i);
+                
+//                // remove the current die from the available dies
+//                availableDies.remove(i);
+                
+                i++;
             }
+            
+            // add the current layer to the stack
+            IC3DStack.addLayer(currentLayer);
         }
     }
 }

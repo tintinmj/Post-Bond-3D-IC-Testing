@@ -68,6 +68,15 @@ public class Die {
             return false;
         }
         final Die other = (Die) obj;
-        return Objects.equals(this.serialNo, other.serialNo);
-    }    
+        if (!Objects.equals(this.serialNo, other.serialNo)) {
+            return false;
+        }
+        if (this.TSV != other.TSV) {
+            return false;
+        }
+        if (this.testCycle != other.testCycle) {
+            return false;
+        }
+        return true;
+    }
 }

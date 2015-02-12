@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author tintinmj
  */
-public class IC3DStack {
+public final class IC3DStack {
     private static List<Layer> layerStack = new ArrayList<>();
     
     public static List<Layer> getAllLayers() {
@@ -53,5 +53,16 @@ public class IC3DStack {
             total += l.getMaxTestCycle();
         }
         return total;
+    }
+
+    public static String getStackDescription() {
+        StringBuilder sb = new StringBuilder();
+        
+        for(int i = layerStack.size() - 1; i >= 0; i--) {
+            sb.append(layerStack.get(i).toString());
+            sb.append("\n");
+        }
+        
+        return sb.toString();
     }
 }
