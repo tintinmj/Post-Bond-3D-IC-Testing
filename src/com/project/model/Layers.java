@@ -6,29 +6,44 @@
 
 package com.project.model;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author tintinmj
  */
 public class Layers {
-    private Deque<Layer> layerStack;
+    private static List<Layer> layerStack = new ArrayList<>();
     
-    public Layers(Deque<Layer> layer) {
-        this.layerStack = layer;
+    public static List<Layer> getAllLayers() {
+        return layerStack;
     }
 
-    public Layers() {
-        layerStack = new ArrayDeque<>();
+    public static void addLayer(Layer layer) {
+        layerStack.add(layer);
     }
     
-    public Deque<Layer> getAllLayers() {
-        return this.layerStack;
+    public static Layer getTopLayer() {
+        return layerStack.get(layerStack.size() - 1);
     }
-
-    public void addLayer(Layer layer) {
-        layerStack.push(layer);
+    
+    public static Layer getBottomLayer() {
+        return layerStack.get(0);
+    }
+    
+    public static Layer getPreviousLayer(Layer currentLayer) {
+        // first layer so return it
+        if(getBottomLayer().equals(currentLayer)) {
+            return currentLayer;
+        }
+        
+        Layer l = null;
+        for(int i = 1; i < layerStack.size(); i++) {
+            if(layerStack.get(i).equals(currentLayer)) {
+                l = layerStack.get(i - 1);
+            }
+        }
+        return l;
     }
 }
