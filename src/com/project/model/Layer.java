@@ -9,6 +9,7 @@ package com.project.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -44,5 +45,27 @@ public class Layer {
             totalTSV += d.getTSV();
         }
         return totalTSV;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.dies);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Layer other = (Layer) obj;
+        if (!Objects.equals(this.dies, other.dies)) {
+            return false;
+        }
+        return true;
     }
 }
