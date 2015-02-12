@@ -76,9 +76,6 @@ public class OurSolution {
             // place the die in layer
             firstlayer.addDie(availableDies.get(i));
             
-//            // delete the die from available dies
-//            availableDies.remove(i);
-            
             // go to next die
             i++;
         }
@@ -117,11 +114,6 @@ public class OurSolution {
                 // and then add it with the total test cycle
                 totalTestCycle += 
                         totalPreviousLayersTestCycle + currentLayer.getMaxTestCycle();
-                
-                
-                
-//                // remove the current die from the available dies
-//                availableDies.remove(i);
                 
                 i++;
             }
