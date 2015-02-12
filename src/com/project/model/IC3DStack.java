@@ -46,4 +46,12 @@ public class IC3DStack {
         }
         return l;
     }
+    
+    public static int getCumulativeTestCycle() {
+        int total = 0;
+        for(Layer l : layerStack) {
+            total += l.getMaxTestCycle();
+        }
+        return total;
+    }
 }

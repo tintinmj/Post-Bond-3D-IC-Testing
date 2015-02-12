@@ -22,16 +22,12 @@ import java.util.Scanner;
  */
 public class OurSolution {
     
-    public Layer layer;
-    public IC3DStack layers;
-    public List<Die> allDies;
+    public List<Die> availableDies;
     
     public int totalTestCycle = 0;
-    public int layerTestCycle = 0;
     
     public OurSolution(){
-        this.layer = new Layer();
-        this.layers = new IC3DStack();
+        
     }
     
     public void takeInputDie() {
@@ -43,7 +39,7 @@ public class OurSolution {
         int noOfDies = Integer.parseInt(sc.nextLine());
         
         
-        allDies = new ArrayList<>();
+        availableDies = new ArrayList<>();
         
         for(int i = 0; i < noOfDies; i++) {
             System.out.println("Serial no : ");
@@ -54,33 +50,79 @@ public class OurSolution {
             int testCycle = Integer.parseInt(sc.nextLine());
             
             Die d = new Die(TSV, testCycle, serialNo);
-            allDies.add(d);
+            availableDies.add(d);
         }
     }
     
     public void solve() {
         // sort the dies with respect to test cycles
-        Collections.sort(allDies, new DieTestCycleComparator());
+        Collections.sort(availableDies, new DieTestCycleComparator());
         
         // logic for first layer
         Layer firstlayer = new Layer();
         int i = 0;
         int tempTSV = 0;
-        int maxTimeCycle = Integer.MIN_VALUE;
-        while(i < allDies.size() && // if there are dies
-                // check if after taking next pin it satisfies
+        
+        // In first layer, we are placing the dies in one go, with out seperately
+        // testing them.
+        while(i < availableDies.size() && // if there are dies
+                // check if after taking next die it satisfies
                 // the maximum tsv constraint
-                (tempTSV + allDies.get(i).getTSV() <= Constant.TSV_MAX)) {
+                (tempTSV + availableDies.get(i).getTSV() <= Constant.TSV_MAX)) {
             
             // calculate the tsv
-            tempTSV = tempTSV + allDies.get(i).getTSV(); 
+            tempTSV = tempTSV + availableDies.get(i).getTSV(); 
             
-            // get the maximum test cycle
-            if(maxTimeCycle <= allDies.get(i).getTestCycle()) {
-                maxTimeCycle = allDies.get(i).getTestCycle();
-            }
+            // place the die in layer
+            firstlayer.addDie(availableDies.get(i));
             
+            // delete the die from available dies
+            availableDies.remove(i);
+            
+            // go to next die
             i++;
+        }
+        
+        // update total test cycle
+        totalTestCycle = firstlayer.getMaxTestCycle();
+        
+        
+        IC3DStack.addLayer(firstlayer);
+        
+        
+        // logic for upper layer stack
+        while(!availableDies.isEmpty()) {
+            
+            // make a new layer
+            Layer currentLayer = new Layer();
+            
+            while(i < availableDies.size() && // if there are dies
+                // check if after taking next die it satisfies
+                // the maximum tsv constraint
+                (tempTSV + availableDies.get(i).getTSV() <= Constant.TSV_MAX)) {
+                
+                // calculate the tsv
+                tempTSV = tempTSV + availableDies.get(i).getTSV(); 
+                
+                // place the die in the layer
+                currentLayer.addDie(availableDies.get(i));
+                
+                // get the cumulative test cycle
+                int totalPreviousLayersTestCycle = 
+                        IC3DStack.getCumulativeTestCycle();
+                
+                // add the maximum test cycle of current layer with the
+                // cumulative test cycles of previous layers
+                // and then add it with the total test cycle
+                totalTestCycle += 
+                        totalPreviousLayersTestCycle + currentLayer.getMaxTestCycle();
+                
+                // place the current die into the layer
+                currentLayer.addDie(availableDies.get(i));
+                
+                // remove the current die from the available dies
+                availableDies.remove(i);
+            }
         }
     }
 }

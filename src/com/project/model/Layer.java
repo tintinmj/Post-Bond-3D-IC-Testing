@@ -68,4 +68,24 @@ public class Layer {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("## ");
+        for(int i = 0; i < dies.size() - 1; i++) {
+            sb.append(dies.get(i).toString());
+            sb.append(" || ");
+        }
+        sb.append(dies.get(dies.size() - 1));
+        sb.append(" ##");
+        
+        String divider = "";
+        for(int i = 0; i < sb.length(); i++) {
+            divider += "-";
+        }
+        
+        return divider + "\n" + sb.toString() + "\n" + divider;
+    }
 }

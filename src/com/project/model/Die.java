@@ -49,7 +49,7 @@ public class Die {
 
     @Override
     public String toString() {
-        return "Die{" + "No = " + serialNo + " }";
+        return serialNo + " : " + TSV + " : " + testCycle;
     }
 
     @Override
