@@ -10,7 +10,7 @@ import com.project.model.Constant;
 import com.project.model.Die;
 import com.project.model.DieTestCycleComparator;
 import com.project.model.Layer;
-import com.project.model.Layers;
+import com.project.model.IC3DStack;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.Scanner;
 public class OurSolution {
     
     public Layer layer;
-    public Layers layers;
+    public IC3DStack layers;
     public List<Die> allDies;
     
     public int totalTestCycle = 0;
@@ -31,7 +31,7 @@ public class OurSolution {
     
     public OurSolution(){
         this.layer = new Layer();
-        this.layers = new Layers();
+        this.layers = new IC3DStack();
     }
     
     public void takeInputDie() {

@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author tintinmj
  */
-public class Layers {
+public class IC3DStack {
     private static List<Layer> layerStack = new ArrayList<>();
     
     public static List<Layer> getAllLayers() {
