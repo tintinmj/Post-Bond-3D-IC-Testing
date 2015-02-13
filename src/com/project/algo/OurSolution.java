@@ -27,7 +27,11 @@ public class OurSolution {
     public int totalTestCycle = 0;
     
     public OurSolution(){
-        
+        availableDies = new ArrayList<>();
+    }
+    
+    public OurSolution(List<Die> availableDies) {
+        this.availableDies = availableDies;
     }
     
     public void takeInputDie() {
@@ -37,9 +41,6 @@ public class OurSolution {
         Constant.TSV_MAX = Integer.parseInt(sc.nextLine());
         System.out.println("No of dies : ");
         int noOfDies = Integer.parseInt(sc.nextLine());
-        
-        
-        availableDies = new ArrayList<>();
         
         for(int i = 0; i < noOfDies; i++) {
             System.out.println("Serial no : ");
@@ -104,6 +105,75 @@ public class OurSolution {
                 
                 // place the current die into the layer
                 currentLayer.addDie(availableDies.get(i));
+                
+                // get the cumulative test cycle
+                int totalPreviousLayersTestCycle = 
+                        IC3DStack.getCumulativeTestCycle();
+                
+                // add the maximum test cycle of current layer with the
+                // cumulative test cycles of previous layers
+                // and then add it with the total test cycle
+                totalTestCycle += 
+                        totalPreviousLayersTestCycle + currentLayer.getMaxTestCycle();
+                
+                i++;
+            }
+            
+            // add the current layer to the stack
+            IC3DStack.addLayer(currentLayer);
+        }
+    }
+    
+    public void solve(List<Die> hardcodedDies) {
+        // sort the dies with respect to test cycles
+        Collections.sort(hardcodedDies, new DieTestCycleComparator());
+        
+        // logic for first layer
+        Layer firstlayer = new Layer();
+        int i = 0;
+        int tempTSV = 0;
+        
+        // In first layer, we are placing the dies in one go, with out seperately
+        // testing them.
+        while(i < hardcodedDies.size() && // if there are dies
+                // check if after taking next die it satisfies
+                // the maximum tsv constraint
+                (tempTSV + hardcodedDies.get(i).getTSV() <= Constant.TSV_MAX)) {
+            
+            // calculate the tsv
+            tempTSV = tempTSV + hardcodedDies.get(i).getTSV(); 
+            
+            // place the die in layer
+            firstlayer.addDie(hardcodedDies.get(i));
+            
+            // go to next die
+            i++;
+        }
+        
+        // update total test cycle
+        totalTestCycle = firstlayer.getMaxTestCycle();
+        
+        
+        IC3DStack.addLayer(firstlayer);
+        
+        
+        // logic for upper layer stack
+        while(i < hardcodedDies.size()) {
+            
+            // make a new layer
+            Layer currentLayer = new Layer();
+            tempTSV = 0;
+            
+            // check if after taking next die it satisfies
+            // the maximum tsv constraint
+            while(i < hardcodedDies.size() && 
+                    (tempTSV + hardcodedDies.get(i).getTSV() <= Constant.TSV_MAX)) {
+                
+                // calculate the tsv
+                tempTSV = tempTSV + hardcodedDies.get(i).getTSV(); 
+                
+                // place the current die into the layer
+                currentLayer.addDie(hardcodedDies.get(i));
                 
                 // get the cumulative test cycle
                 int totalPreviousLayersTestCycle = 
