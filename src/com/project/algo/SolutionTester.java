@@ -15,7 +15,6 @@
  */
 package com.project.algo;
 
-import com.project.model.Constant;
 import com.project.model.Die;
 import com.project.model.IC3DStack;
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class SolutionTester {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //solution.takeInputDie();
+        
         List<Die> dies = new ArrayList<>();
         
         dies.add(new Die(30, 2608870, "D1"));
@@ -41,7 +40,7 @@ public class SolutionTester {
         dies.add(new Die(15,  106391, "D5"));
         
         OurSolution solution = new OurSolution(dies);
-        Constant.TSV_MAX = 70;
+        OurSolution.TSV_MAX = 70;
         solution.solve();
         System.out.println("Total Test Cycle : " + solution.totalTestCycle);
         System.out.println(IC3DStack.getStackDescription());
